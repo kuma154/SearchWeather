@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Document</title>
+    
     <link rel="stylesheet" href="css/style.css">
     <script src="js/axios.min.js"></script>
     <script src="js/vue.js"></script>
@@ -36,6 +37,7 @@
     <script>
     
     var citySrc='http://wthrcdn.etouch.cn/weather_mini?city=';
+   
     var app=new Vue({
         el:'#app',
         data:{
@@ -45,6 +47,7 @@
         },
         methods: {
             add:function(index){
+                console.log(citySrc+'北京');
                 this.city=this.scityarr[index];
                 this.searchCity();
             },
