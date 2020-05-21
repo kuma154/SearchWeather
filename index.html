@@ -1,13 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .active{
+            color: orange;
+        }
+        ul{
+            list-style: none;
+        }
+        
+
+        .main{
+            width: 600px;
+            display: flex;
+            flex-direction: column;
+          
+        }
+        .main > *{
+            margin-top: 15px;
+        }
+       .main h2{
+           align-self: center;
+       }
+        .searchbar{
+            width: 600px;
+            align-self: center;
+            position: relative;
+        }
+        .searchbar #text,#btn{
+            outline: none;
+            border: none;
+        }
+        .searchbar #text{
+            width: 598px;
+            height: 40px;
+            border: 1px solid red;
+            text-indent: 10px;
+            font-size: 18px;
+            line-height: 40px;
+        }
+        .searchbar #btn{
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+            width: 80px;
+            text-align: center;
+            height: 42px;
+            background-color: red;
+            color: #fff;
+            padding: 0 30px;
+        }
+        .cityBar{
+            width: 100%;
+            display: flex;
+      
+        }
+        .cityBar li{
+          padding-right: 15px;
+        }
+        .citylist{
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
+            
+           
+        }
+        .citylist li{
+            flex: 1;
+            font-size: 14px;
+            justify-self: center;
+            text-align: center;
+            padding: 8px 10px;
+        }
+        .citylist li *{
+            margin-top: 8px;
+        }
+        .citylist li .small{
+            font-size: 12px;
+        }
+        .citylist li:not(:last-child){
+            border-right: 1px solid #ddd;
+        }
+    </style>
 </head>
+
 <body>
 
     <div id="app" class="main">
@@ -29,8 +124,37 @@
             </ul>
         </div>
     </div>
-    <script src="js/index.js"></script>
-
+    <script>
+    
+    var citySrc='http://wthrcdn.etouch.cn/weather_mini?city=';
+    var app=new Vue({
+        el:'#app',
+        data:{
+            city:'',
+            cityarr:[],
+            scityarr:['北京','上海','合肥','蚌埠']
+        },
+        methods: {
+            add:function(index){
+                this.city=this.scityarr[index];
+                this.searchCity();
+            },
+            searchCity:function(){
+                var that=this;
+                
+                axios.get(citySrc+that.city).then(function (res) { 
+                    that.cityarr=res.data.data.forecast;
+                    that.scityarr.push(that.city);
+                    console.log(that.cityarr);
+                   
+                 },function (err) {
+                    console.log(err);
+                })
+               
+            }
+        },
+    })
+    </script>
 </body>
 
 </html>
