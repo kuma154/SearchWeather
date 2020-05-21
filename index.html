@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app" class="main">
+        <h2>搜索城市天气</h2>
+        <div class="searchbar"><input @keyup.enter='searchCity'v-model='city' id="text" type="text"><input id="btn" type="button" @click='searchCity' value="搜索"></div>
+        <div>
+            <ul  class="cityBar">
+                <li @click='add(index)' v-for=' (item,index) in scityarr'>{{item}}</li>
+            </ul>
+        </div>
+        <div>
+            <ul class="citylist">
+                <li v-for='item in cityarr'>
+                    <h1  class="active">{{item.type}}</h1>
+                    <p  class="active small">{{item.low}} {{item.high}}</p>
+                    <p >{{item.date}}</p>
+                </li>
+               
+            </ul>
+        </div>
+    </div>
+    <script src="js/index.js"></script>
+
+</body>
+
+</html>
