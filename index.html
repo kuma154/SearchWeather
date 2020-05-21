@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Document</title>
-    
+
     <link rel="stylesheet" href="css/style.css">
     <script src="js/axios.min.js"></script>
     <script src="js/vue.js"></script>
@@ -17,55 +16,67 @@
 
     <div id="app" class="main">
         <h2>搜索城市天气</h2>
-        <div class="searchbar"><input @keyup.enter='searchCity'v-model='city' id="text" type="text"><input id="btn" type="button" @click='searchCity' value="搜索"></div>
+        <div class="searchbar"><input @keyup.enter='searchCity' v-model='city' id="text" type="text"><input id="btn"
+                type="button" @click='searchCity' value="搜索"></div>
         <div>
-            <ul  class="cityBar">
+            <ul class="cityBar">
                 <li @click='add(index)' v-for=' (item,index) in scityarr'>{{item}}</li>
             </ul>
         </div>
         <div>
             <ul class="citylist">
                 <li v-for='item in cityarr'>
-                    <h1  class="active">{{item.type}}</h1>
-                    <p  class="active small">{{item.low}} {{item.high}}</p>
-                    <p >{{item.date}}</p>
+                    <h1 class="active">{{item.type}}</h1>
+                    <p class="active small">{{item.low}} {{item.high}}</p>
+                    <p>{{item.date}}</p>
                 </li>
-               
+
             </ul>
         </div>
     </div>
     <script>
-    
-    var citySrc='http://wthrcdn.etouch.cn/weather_mini?city=';
-   
-    var app=new Vue({
-        el:'#app',
-        data:{
-            city:'',
-            cityarr:[],
-            scityarr:['北京','上海','合肥','蚌埠']
-        },
-        methods: {
-            add:function(index){
-                console.log(citySrc+'北京');
-                this.city=this.scityarr[index];
-                this.searchCity();
+        var citySrc = 'http://wthrcdn.etouch.cn/weather_mini?city=';
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                city: '',
+                cityarr: [],
+                scityarr: ['北京', '上海', '合肥', '蚌埠']
             },
-            searchCity:function(){
-                var that=this;
-                
-                axios.get(citySrc+that.city).then(function (res) { 
-                    that.cityarr=res.data.data.forecast;
-                    that.scityarr.push(that.city);
-                    console.log(that.cityarr);
-                   
-                 },function (err) {
-                    console.log(err);
-                })
-               
-            }
-        },
-    })
+            methods: {
+                add: function (index) {
+                    console.log(citySrc + '北京');
+                    this.city = this.scityarr[index];
+                    this.searchCity();
+                },
+                searchCity: function () {
+                    var that = this;
+
+                    axios.get(citySrc + that.city).then(function (res) {
+                        console.log(citySrc + that.city);
+                        that.cityarr = res.data.data.forecast;
+                        that.scityarr.push(that.city);
+                        console.log(that.cityarr);
+
+                    }, function (err) {
+                        console.log(err);
+                    })
+                    axios.defaults.headers = {
+                        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                    }
+                    axios.defaults.transformRequest = [function (data) {
+                        var newData = "";
+                        for (var k in data) {
+                            newData += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) +
+                                '&'
+                        }
+                        return newData
+                    }]
+
+                }
+            },
+        })
     </script>
 </body>
 
